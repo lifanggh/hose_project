@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.fangzu.dao.FangZuDao">
+<select id="getFangZu"  resultMap="All">
+
+SELECT * FROM fangzu f LEFT JOIN tenant t ON f.f_tid=t.tid
+         LEFT JOIN house h ON f.f_hid=h.hid;
+
+</select>
+<resultMap type="com.zy.fangzu.pojo.FangZu" id="All">
+		<id column="fid" property="fid" />
+		<result column="fmoney" property="fmoney" />
+		<result column="ftime" property="ftime" />
+		<result column="fother" property="fother" />
+		<association property="f_tid"
+			javaType="com.zy.tenant.pojo.Tenant">
+			<result column="tname" property="tname"/>
+			<result column="tphone" property="tphone"/>
+			<result column="tsex" property="tsex"/>
+			<result column="tnative" property="tnative"/>
+			<result column="tIDC" property="tIDC"/>
+		</association>
+		<association property="f_hid" javaType="com.zy.house.pojo.House">
+			<id column="hid" property="hid"></id>
+			<result column="harea" property="harea" />
+			<result column="hxq" property="hxq" />
+			<result column="hdy" property="hdy" />
+			<result column="hceng" property="hceng" />
+			<result column="hroom" property="hroom" />
+			
+			<result column="hprice" property="hprice" />
+			
+			<result column="haddress" property="haddress" />
+
+		</association>
+		</resultMap>
+
+<delete id="delByIds" parameterType="java.lang.String">
+		delete from fangzu where fid
+		in(${fids})
+	</delete>
+	<delete id="delById" parameterType="java.lang.Integer">
+		delete from fangzu where fid =#{fid}
+	</delete>
+
+<select id="getFangZuById" parameterType="java.lang.Integer"
+		resultType="com.zy.fangzu.pojo.FangZu">
+		select * from fangzu where fid = #{fid}
+	</select>
+
+
+<select id="queryByIds" parameterType="java.lang.String"
+		resultType="com.zy.fangzu.pojo.FangZu">
+		select * from fangzu where fid in(${fids})
+	</select>
+
+<insert id="add" parameterType="com.zy.fangzu.pojo.FangZu">
+		INSERT INTO `fangzu`(`fmoney`,`ftime`,`fother`,`f_tid`,`f_hid`)
+		VALUES (#{fmoney},#{fother},${getF_tid().getTid()},#{getF_hid().getHid()});
+	</insert>
+<update id="update" parameterType="com.zy.house.pojo.House">
+		UPDATE fangwu
+			SET
+			  `fmoney` = #{fmoney},
+			  `ftime` = #{ftime},
+			  `fother` = #{fother},
+			  `f_tid` = #{f_tid},
+			  `f_hid` = #{f_hid},
+			 
+			WHERE `fid` = #{fid};
+	</update>
+
+
+
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.user.dao.RoleDao">
+
+
+
+<select id="getRoleAll" resultType="com.zy.login.entity.Role">
+select * from role 
+</select>
+<delete id="delById" parameterType="java.lang.Integer">
+delete from role where rid=#{rid}
+</delete>
+
+<insert id="addRole" parameterType="com.zy.login.entity.Role">
+insert into role(rname) values(#{rname})
+</insert>
+
+<update id="upRole" parameterType="com.zy.login.entity.Role">
+update role set rname=#{rname} where rid=#{rid}
+</update>
+
+<delete id="delByIds">
+delete from role where rid in(${rids})
+</delete>
+
+<select id="getRoleById" parameterType="java.lang.Integer" resultType="com.zy.login.entity.User_Role">
+SELECT * from `user-role` where id=#{id}
+</select>
+
+<delete id="delBy" parameterType="java.lang.Integer">
+delete from `user-role` where id=#{id}
+</delete>
+<insert id="addRoles" >
+insert into `user-role` values
+<foreach collection="ids" item="ids" separator=",">
+(#{id},#{ids})
+</foreach>
+</insert>
+
+</mapper>

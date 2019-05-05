@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<context:component-scan base-package="com.zy" />
+	<!-- 1 数据库连接池 --><!-- jdbc:mysql://localhost:3306/db1105 -->
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/zhiyouhouse?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true"/>
+		<property name="username" value="root" />
+		<property name="password" value="123" />
+		<!--maxActive: 最大连接数量 -->
+		<property name="maxActive" value="20" />
+		<!--minIdle: 最小空闲连接 -->
+		<property name="minIdle" value="5" />
+		<!--maxIdle: 最大空闲连接 -->
+		<property name="maxIdle" value="5" />
+	</bean>
+
+
+	<!-- 2 mybatis配置信息 -->
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 配置文件 -->
+		<property name="configLocation" value="classpath:mybatis-config.xml"/>
+		<!-- 映射mapper文件 -->
+		<property name="mapperLocations" value="classpath:com/zy/*/dao/**/*.xml" />
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+		<!-- 配置接口路径 -->
+		<property name="basePackage" value="com.zy.*.dao"></property>
+	</bean>
+
+
+	<!--3 配置事务管理  指定给事务管理的bean-->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!--配置数据源 引入数据库连接池 获取到数据连接 -->
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 定义advice ,配置传播特性 事务隔离级别 只读事务 回滚策略 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="up*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="del*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+		</tx:attributes>
+	</tx:advice>
+
+	
+	<aop:config>
+	    <!--定义AOP通知器 指定事务控制在service层 -->
+		<aop:advisor advice-ref="txAdvice"
+			pointcut="execution(* com.zy.*.service.*.*(..))" />
+	</aop:config>
+
+
+
+<!-- Advisor的配置
+<\aop:advisor advice-ref=”” pointcut-ref=”“/>
+它是切点和通知的复合体，仅包含一个切点和一个通知。它的切点表示方法和<\aop:aspect>相同，增强定义方式则要实现相关的接口（MethodBeforeAdvice、AfterReturningAdvice/ThrowsAdvice）
+ -->
+</beans>

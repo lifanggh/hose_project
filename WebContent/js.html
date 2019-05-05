@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+	</head>
+	<body>
+		<a href="https://www.baidu.com">百度</a><br>
+		<input id="pwd" type="password"><input type="checkbox" onclick="showPwd(this)">显示密码
+		<br>
+		<input type="checkbox" onclick="checkALl(this)" >全选/全不选
+		<input type="checkbox" name="c">1
+		<input type="checkbox" name="c">2
+		<input type="checkbox" name="c">3
+		<input type="checkbox" name="c">4
+		
+		<table border="1">
+			<tr>
+				<td>名字</td>
+				<td>年龄</td>
+				<td>性别</td>
+				<td>按钮 </td>
+			</tr>
+			<tr><td>小明</td>
+				<td>19</td>
+				<td>男</td>
+				<td><button onclick="showName(this)">查看</button></td>
+			</tr>
+			<tr><td>小红</td>
+				<td>18</td>
+				<td>女</td>
+				<td><button>查看</button></td>
+			</tr>
+		</table>
+		
+		<br>
+		<input type="button" value="innerHTML" onclick="setHTML()">
+		<input type="button" value="innerText" onclick="setText()">
+		<div id="d">
+			测试数据
+		</div>
+		
+		<script type="text/javascript">
+		
+			function setHTML(){
+				var html = document.getElementById("d").innerHTML
+				//alert(html)
+				document.getElementById("d").innerHTML = '<a href="#">连接</a>';
+			}
+			
+			function setText(){
+				var text = document.getElementById("d").innerText
+				//alert(text)
+				document.getElementById("d").innerText = '<a href="#">连接</a>';
+			}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+			//document.getElementById(); //可通过指定的 ID 来返回元素
+			//document.getElementsByName();//可通过指定的 Name来返回元素
+			//document.getElementsByTagName();//使用指定的标签名返回所有的元素
+			
+			function showName(btn){
+				var tr =  btn.parentNode.parentNode;
+				var td = tr.firstChild;
+				alert(td.innerText)
+			}
+			
+			function checkALl(my){
+				var arr =document.getElementsByName("c");
+				for(var i=0;i<arr.length;i++){
+					arr[i].checked = my.checked;
+				}
+				
+			}
+			
+			
+			function showPwd(ch){
+				var pwd = document.getElementById("pwd");
+				if(ch.checked){
+					pwd.type='text';
+				}else{
+					pwd.type='password';
+				}
+			}
+		</script>
+		
+		
+		
+		
+		
+		
+		
+		
+		<script type="text/javascript">
+			//function 函数名 (参数列表)
+			//js是一个弱类型语言 
+			/*test(1,"1");
+			function test(a,b){
+				alert(a+b);
+			}*/
+			
+			var a = 1;
+			var b = "1";
+			//var c = {};
+			var c = new Object();
+			var d = true;
+			//alert(typeof(c))
+			
+			//数组
+			var arr = [2,6,8,5,4,7];
+			var arr1 = new Array(1,2,3);
+			//js中数组只是一个容器
+			//sort 排序
+				//alert(arr.sort());
+			//pop  删除并返回最后一个元素
+				//arr.pop();
+				//alert(arr);
+			//push 追加一个元素到数组中的最后一个位置
+				//arr.push("*");
+				//alert(arr);
+			//indexof 判断数组中是否包含某个元素 
+				//alert(arr.indexOf(5))
+			/*
+			for(var i = 0;i<arr.length ;i++){
+				alert(arr[i])
+			}*/
+			
+			//对象
+			//第一种 {}
+			var student = {
+					name:"小明",
+					age:15,
+					xuexi:function(s){alert("学习"+s+"!")}
+			}
+			//取值
+			//alert(student.name)
+			//调用函数
+			//student.xuexi('php');
+			//第二种  new Object
+			var ss = new Object();
+			ss.name = '小红';
+			ss.xuexi = function(){alert("不爱学习!!")};
+			//alert(ss.name)
+			//ss.xuexi();
+			
+			var num = 12345654321;
+			num+="";
+			//alert(num.lastIndexOf('3'));
+			/*alert(num.substring(1,4))
+			alert(num.substr(1,4))*/
+			//var num1 = "a,b,c";
+			
+			//alert(num1.replace(",","/"))
+			
+			//时间
+			var date = new Date(2008,1,1);
+			//alert(date.getFullYear())
+			
+		</script>
+	</body>
+</html>

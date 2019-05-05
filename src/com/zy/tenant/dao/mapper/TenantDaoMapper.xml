@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.tenant.dao.TenantDao">
+	<select id="getTenant" resultType="com.zy.tenant.pojo.Tenant">
+		select * from tenant where 1=1
+		<if test="tenant.tname !=null and tenant.tname != ''">
+			and tname like'%${tenant.tname}%'
+		</if>
+		<if test="tenant.tphone != null and tenant.tphone != ''">
+			and tphone = #{tenant.tphone}
+		</if>
+		<if test="tenant.tsex != null and tenant.tsex != ''">
+			and tsex = #{tenant.tsex}
+		</if>
+		<if test="tenant.tIDC != null and tenant.tIDC != ''">
+			and tIDC = #{tenant.tIDC}
+		</if>
+
+
+	</select>
+	<insert id="addTenant" parameterType="com.zy.tenant.pojo.Tenant">
+		INSERT INTO
+		`tenant`(`tname`,`tphone`,`tsex`,`tnative`,`tIDC`,`tTime`)
+		VALUES
+		(#{tname},#{tphone},#{tsex},#{tnative},#{tIDC},now());
+	</insert>
+	<update id="upTenant" parameterType="com.zy.tenant.pojo.Tenant">
+		UPDATE tenant
+		SET
+		`tname` = #{tname},
+		`tphone` = #{tphone},
+		`tsex` = #{tsex},
+		`tnative` = #{tnative},
+		`tIDC` = #{tIDC},
+		`tTime` = NOW()
+
+
+		WHERE `tid` = #{tid};
+	</update>
+
+	<delete id="delByIds" parameterType="java.lang.String">
+		delete from tenant where tid
+		in(${tids})
+	</delete>
+	<delete id="delById">
+		delete from tenant where tid =#{tid}
+	</delete>
+	<select id="getTenantById" parameterType="java.lang.Integer"
+		resultType="com.zy.tenant.pojo.Tenant">
+		select * from tenant where tid = #{tid}
+	</select>
+
+	<select id="queryByIds" parameterType="java.lang.String"
+		resultType="com.zy.tenant.pojo.Tenant">
+		select * from tenant where tid in(${tids})
+	</select>
+
+</mapper>

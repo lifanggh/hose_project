@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.maintain.dao.maintainDao">
+ 
+ <update id="upMaintain" parameterType="com.zy.maintain.entity.Maintain">
+ update maintain set mpid=#{mpid},mexplain=#{mexplain},mresult=#{mresult},mbz=#{mbz},mtime=#{mtime},mhouse=#{mhouse} where mid=#{mid}
+ </update>
+ 
+   <insert id="addMaintain" parameterType="com.zy.maintain.entity.Maintain">
+   insert into maintain values(null,#{mpid},#{mexplain},#{mresult},#{mbz},#{mtime},#{mhouse})
+   </insert>
+<select id="getdate" parameterType="java.lang.Integer" resultType="com.zy.maintain.entity.Maintain">
+select * from maintain where mid=#{mid}
+</select>
+
+	<select id="getAllmaintain2" resultMap="All">
+		SELECT *
+		FROM maintain m LEFT JOIN house h ON h.hid=m.mhouse
+		LEFT JOIN back b ON
+		m.mpid=b.bid where 1=1
+ 	 <!-- 	<if test="maintain.back !=null and maintain.back != ''">
+			and b.bname = #{maintain.back.bname}
+		</if> -->
+		<if test="maintain.mresult != null and maintain.mresult != ''">
+			and m.mresult like '%${maintain.mresult}%' 
+		</if>
+<!--		<if test="maintain.house !=null and maintain.house != 0">
+			and h.hxq= #{maintain.house.hxq}
+		</if>
+		<if test="maintain.mjBegin != 0 and maintain.mjBegin != null">
+		  		and m.mtime &gt;= #{mtime.mjBegin}
+	  	</if>
+	  	<if test="maintain.mjEnd != 0 and maintain.mjEnd != null">
+	  		and m.mtime &lt;= #{maintain.mjEnd}
+	  	</if>
+		 <if test="maintain.house !=null and maintain.house != ''">
+			and h.harea like '%${maintain.house.harea}%' 
+		</if>
+		<if test="maintain.house != null and maintain.house != ''">
+			and h.hxq like '%${maintain.house.hxq}%' 
+		</if>
+		<if test="maintain.house !=null and maintain.house!= 0">
+			and h.haddress like '%${maintain.house.haddress}%'
+		</if> -->
+		  
+		
+		
+		<if test="col !='' and col !=null">
+			<if test="val !='' and val !=null">
+				and ${col} like '%${val}%'
+			</if>
+			<if test="begin !='' and begin !=null">
+				and ${col} &gt;=#{begin}
+			</if>
+			<if test="end !=0 and end !=null">
+				and ${col} &lt;=#{end}
+			</if>
+			<if test="jgd !='' and jgd !=null">
+				and ${col} like '%${jgd}%'
+			</if>
+		</if>
+	</select>
+
+	<resultMap type="com.zy.maintain.entity.Maintain" id="All">
+		<id column="mid" property="mid" />
+		<result column="mpid" property="mpid" />
+		<result column="mexplain" property="mexplain" />
+		<result column="mresult" property="mresult" />
+		<result column="mbz" property="mbz" />
+		<result column="mtime" property="mtime" />
+		<result column="mhouse" property="mhouse" />
+		<association property="back"
+			javaType="com.zy.backoffice.entity.Back">
+			<result column="bname" property="bname"></result>
+		</association>
+		<association property="house" javaType="com.zy.login.entity.House">
+			<id column="hid" property="hid"></id>
+			<result column="harea" property="harea" />
+			<result column="hxq" property="hxq" />
+			<result column="hdy" property="hdy" />
+			<result column="hceng" property="hceng" />
+			<result column="hroom" property="hroom" />
+			<result column="hacreage" property="hacreage" />
+			<result column="horientation" property="horientation" />
+			<result column="hfinish" property="hfinish" />
+			<result column="hsq" property="hsq" />
+			<result column="hlimit" property="hlimit" />
+			<result column="hptss" property="hptss" />
+			<result column="hprice" property="hprice" />
+			<result column="hstate" property="hstate" />
+			<result column="himg" property="himg" />
+			<result column="haddress" property="haddress" />
+			<result column="createtime" property="createtime" />
+			<result column="modifytime" property="modifytime" />
+
+		</association>
+	</resultMap>
+	<!-- //getAllmain  -->
+	<select id="getAllmain" resultType="com.zy.maintain.entity.Maintain">
+		select * from maintain
+	</select>
+	
+	<delete id="delById" parameterType="java.lang.Integer">
+	delete from maintain where mid=#{mid}
+	</delete>
+<delete id="delByIds">
+delete from maintain where mid=${ids}
+</delete>
+</mapper>

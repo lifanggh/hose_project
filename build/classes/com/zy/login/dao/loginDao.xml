@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.login.dao.loginDao">
+<select id="getLogin" parameterType="java.lang.String" resultType="com.zy.login.entity.User">
+select * from user where name=#{name}
+</select>
+<insert id="addResgister" parameterType="com.zy.login.entity.User">
+insert into user(name,pass)values(#{name},#{pass})
+</insert>
+<select id="getPowByName" parameterType="java.lang.String" resultType="com.zy.login.entity.Pow">
+select p.* from USER u
+LEFT JOIN `user-role` ur on u.id=ur.id
+LEFT JOIN role r on r.rid=ur.rid
+LEFT JOIN `role-pow` pp ON pp.rid=r.rid
+LEFT JOIN pow p ON p.pid=pp.pid
+WHERE u.name=#{name};
+
+</select>
+<select id="getMenuByPid" parameterType="java.lang.Integer" resultType="com.zy.login.entity.Pow">
+select * from pow where parentid=#{pid}
+</select>
+
+
+<select id="getUserAll" resultType="com.zy.login.entity.User">
+select * from user 
+</select>
+
+<delete id="delById" parameterType="java.lang.Integer">
+delete from user where id=#{id}
+</delete>
+
+<insert id="addUser" parameterType="com.zy.login.entity.User">
+insert into user values(null,#{name},#{pass})
+</insert>
+
+<update id="upUser" parameterType="com.zy.login.entity.User">
+update user set name=#{name},pass=#{pass} where id=#{id}
+</update>
+
+
+<delete id="delByIds">
+delete from user where id in(${ids})
+</delete>
+</mapper>

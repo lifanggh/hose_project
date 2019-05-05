@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.user.dao.PowDao">
+	<select id="getAllPow" resultType="com.zy.login.entity.Pow">
+		select * from pow where url is NULL
+	</select>
+	<select id="getPows" parameterType="java.lang.Integer"
+		resultType="com.zy.login.entity.Role_Pow">
+		SELECT * FROM `role-pow` WHERE rid=#{rid}
+	</select>
+	<delete id="delPow" parameterType="java.lang.Integer">
+		delete from `role-pow` WHERE rid=#{rid}
+	</delete>
+	<insert id="add">
+		insert into `role-pow` values
+		<foreach collection="ids" item="is" separator=",">
+			(#{rid},#{is})
+		</foreach>
+	</insert>
+	<!-- //insert into role(rname) values(#{rname}) -->
+	<insert id="addpow" parameterType="com.zy.login.entity.Pow">
+		insert into pow(pname) values(#{pname})
+	</insert>
+	<delete id="delOne" parameterType="java.lang.Integer">
+		delete from pow where pid=#{pid}
+	</delete>
+	<update id="upPow" parameterType="com.zy.login.entity.Pow">
+		update pow set pname=#{pname} where pid=#{pid}
+	</update>
+	<delete id="delByIds">
+		delete from pow where pid in(${ids})
+	</delete>
+
+	<!-- delete from role where rid in(${rids}) -->
+</mapper>

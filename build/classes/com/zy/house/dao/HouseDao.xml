@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.house.dao.HouseDao">
+
+	<select id="getHouse" resultType="com.zy.login.entity.House">
+		select * from house where 1=1
+		<if test="house.harea !=null and house.harea != ''">
+			and harea=#{house.harea}
+		</if>
+		<if test="house.hxq !=null and house.hxq != ''">
+			and hxq like '%${house.hxq}%'
+		</if>
+		<if test="house.hceng !=null and house.hceng != ''">
+			and hceng =#{house.hceng}
+		</if>
+		<if test="house.mjBegin !=0 and house.mjBegin !=null">
+			and hacreage &gt;=#{house.mjBegin}
+		</if>
+		<if test="house.mjEnd !=0 and house.mjEnd != null">
+			and hacreage &lt; =#{house.mjEnd}
+		</if>
+		<if test="house.hfinish !=null">
+			and hfinish= #{house.hfinish}
+		</if>
+		<if test="house.hsq !=null">
+			and hsq= #{house.hsq}
+		</if>
+		<if test="house.horientation !=null and house.horientation != 0 ">
+			and horientation= #{house.horientation}
+		</if>
+		<if test="house.hstate !=null">
+			and hstate= #{house.hstate}
+		</if>
+		<if test="house.hptsss != null">
+			<foreach collection="house.hptsss" item="pt">
+				and hptss like'%${pt}%'
+			</foreach>
+		</if>
+		<if test="house.haddress != null and house.haddress != ''">
+			and house.haddress like '%${house.haddress}%'
+		</if>
+
+		<if test="col !='' and col !=null">
+			<if test="val !='' and val !=null">
+				and ${col} like '%${val}%'
+			</if>
+			<if test="begin !='' and begin !=null">
+				and ${col} &gt;=#{begin}
+			</if>
+			<if test="end !=0 and end !=null">
+				and ${col} &lt;=#{end}
+			</if>
+		</if>
+	</select>
+	<insert id="addHouses" parameterType="com.zy.login.entity.House">
+		INSERT INTO
+		`house`(`harea`,`hxq`,`hdy`,`hceng`,`hroom`,`hacreage`,`horientation`,`hfinish`,`hsq`,`hlimit`,`hptss`,`hprice`,`hstate`,`himg`,`haddress`)
+		VALUES
+		(#{harea},#{hxq},#{hdy},#{hceng},#{hroom},#{hacreage},#{horientation},#{hfinish},#{hsq},#{hlimit},#{hptss},#{hprice},#{hstate},#{himg},#{haddress});
+	</insert>
+	<select id="getHouseById" parameterType="java.lang.Integer" resultType="com.zy.login.entity.House">
+	select * from house where hid=#{hid}
+	
+	</select>
+	
+	<update id="update" parameterType="com.zy.login.entity.House">
+">
+		UPDATE house
+			SET
+			  `harea` = #{harea},
+			  `hxq` = #{hxq},
+			  `hdy` = #{hdy},
+			  `hceng` = #{hceng},
+			  `hroom` = #{hroom},
+			  `hacreage` = #{hacreage},
+			  `horientation` = #{horientation},
+			  `hfinish` = #{hfinish},
+			  `hsq` = #{hsq},
+			  `hlimit` = #{hlimit},
+			  `hptss` = #{hptss},
+			  `hprice` = #{hprice},
+			  `hstate` = #{hstate},
+			  `himg` = #{himg},
+			  `haddress` = #{haddress},
+			  `modifytime` = NOW()
+			WHERE `hid` = #{hid};
+	</update>
+	<delete id="delById" parameterType="java.lang.String">
+		delete from house where hid in(${ids})
+	</delete>
+	
+	
+	
+	<select id="queryByIds" parameterType="java.lang.String" resultType="com.zy.login.entity.House">
+		select *  from house where hid in(${ids})
+	</select>
+</mapper>

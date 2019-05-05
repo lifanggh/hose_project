@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+		<script type="text/javascript" src="js/jquery-3.2.1/jquery-3.2.1.min.js"></script>
+		
+	</head>
+	<body>
+		<a id="cli">点击</a>
+		<input type="text" id="tt" class="aa" name="123" aa="123">
+		<input type="button" value="按钮" id="btn">
+		<div id="dd">
+		123
+		</div>
+		<input type="checkbox" id="all" >全选/全不选
+		<input type="checkbox" name="c">1
+		<input type="checkbox" name="c">2
+		<input type="checkbox" name="c">3
+		<input type="checkbox" name="c">4
+		<script type="text/javascript">
+			$("#all").click(function(){
+				//循环
+				/*$("[name='c']").each(function(){
+					$(this).attr("checked",true)
+				})*/
+				$("[name='c']").attr('checked',$(this).prop("checked"));
+			})
+		
+		
+			$("#cli").click(function(){
+				alert("prop:"+$("#tt").prop('aa'))
+				alert("attr:"+$("#tt").attr('aa'))
+			})
+			
+			
+		
+		
+		
+		
+		
+		
+			//获取value值   js    .value
+			document.getElementsByName("123")[0].value
+			//jquery    .val()
+			$("input .aa [name='123']").val()
+			//text  html
+			//js  innerHTML     jquery .html()
+			//js  innerText     jquery .text()
+		
+			$("input").click(function(){
+				//alert($(this).attr('type'))
+			})
+			//js
+			document.getElementById("dd");
+			$("#dd")
+			//js
+			document.getElementsByName("123");
+			$("[name='123']")
+			//js
+			document.getElementsByTagName("input")
+			$("input")
+			
+			//jquery
+			$("html body .aa")
+			
+			//事件
+			$("#btn").click(function(){
+				$("#dd").append("456");
+			})
+		</script>
+	</body>
+</html>

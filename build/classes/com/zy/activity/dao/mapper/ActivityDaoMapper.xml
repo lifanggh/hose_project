@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.activity.dao.ActivityDao">
+     <select id="getActivityAll" resultType="com.zy.activity.pojo.Activity">
+        select * from activity;
+     </select>
+     <insert id="addgetIdAll" parameterType="com.zy.activity.pojo.Activity">
+         INSERT INTO activity VALUES(NULL,#{acdatatime},#{actheme},#{accontent},#{acwhere},${acmoney},#{acpeople})
+     </insert>
+     <delete id="delActivityById" parameterType="java.lang.Integer">
+        DELETE FROM activity WHERE acid=#{acids};
+     </delete>
+     <select id="getActivityId" parameterType="java.lang.Integer" resultType="com.zy.activity.pojo.Activity">
+         select * from activity where acid=#{acid}
+     </select>
+     <update id="upDaActivity" parameterType="com.zy.activity.pojo.Activity">
+         UPDATE activity SET acdatatime=#{acdatatime},actheme=#{actheme},accontent=#{accontent},acwhere=#{acwhere},acmoney=#{acmoney},acpeople=#{acpeople} WHERE acid=#{acid};
+     </update>
+</mapper>

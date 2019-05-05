@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.backoffice.dao.backDao">
+
+<select id="getBackAll" resultType="com.zy.backoffice.entity.Back">
+select * from back  where 1=1
+		<if test="col !='' and col !=null">
+			<if test="val !='' and val !=null">
+				and ${col} like '%${val}%'
+			</if>
+			<if test="begin !='' and begin !=null">
+				and ${col} &gt;=#{begin}
+			</if>
+			<if test="end !=0 and end !=null">
+				and ${col} &lt;=#{end}
+			</if>
+			<if test="jg !='' and jg !=null">
+				and ${col} like '%${jg}%'
+			</if>
+		</if>
+</select>	
+<insert id="addBack" parameterType="com.zy.backoffice.entity.Back">
+insert into back values(null,#{bname},#{bidcard},#{bphone},#{bsex},#{bjob},#{bwage},#{badress},#{btime});
+</insert>
+<delete id="delById" parameterType="java.lang.Integer">
+delete from back where bid=#{bid}
+</delete>
+<select id="getBack" parameterType="java.lang.Integer" resultType="com.zy.backoffice.entity.Back"> 
+select * from back where bid=#{bid}
+</select>
+<update id="updata" parameterType="com.zy.backoffice.entity.Back">
+update back set bname=#{bname},bidcard=#{bidcard},bphone=#{bphone},bsex=#{bsex},bjob=#{bjob},bwage=#{bwage},badress=#{badress},btime=#{btime} where bid=#{bid};
+</update>
+
+<delete id="delByIds">
+delete from back where bid in(${ids})
+</delete>
+</mapper>

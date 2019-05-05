@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.contract.dao.ContractDao">
+   <select id="getContractAll" resultMap="ClassContract">
+      select * from contract con
+      inner join house h on h.hid=con.cohid
+      inner join tenant t on t.tid=con.cotid
+   </select>
+   <resultMap type="com.zy.contract.pojo.Contract" id="ClassContract">
+        <id property="coid" column="coid" />
+        <result property="codata" column="codata" />
+        <result property="cobegin" column="cobegin" />
+        <result property="coend" column="coend" />
+        <result property="cohrental" column="cohrental" />
+        <result property="comway" column="comway" />
+        <result property="coyajin" column="coyajin" />
+        <result property="coperiods" column="coperiods" />
+        <result property="coconpeo" column="coconpeo" />
+        <result property="coconzt" column="coconzt" />
+       <association property="cohid" javaType="com.zy.house.pojo.House">
+          <id property="hid" column="hid" />
+          <result property="harea" column="harea" />
+          <result property="hxq" column="hxq" />
+          <result property="hdy" column="hdy" />
+          <result property="hceng" column="hceng"/>
+          <result property="hroom" column="hroom"/>
+          <result property="hacreage" column="hacreage"/>
+          <result property="horientation" column="horientation"/>
+          <result property="hfinish" column="hfinish"/>
+          <result property="hsq" column="hsq"/>
+          <result property="hlimit" column="hlimit"/>
+          <result property="hptss" column="hptss"/>
+          <result property="hprice" column="hprice"/>
+          <result property="hstate" column="hstate"/>
+          <result property="himg" column="himg"/>
+          <result property="haddress" column="haddress"/>
+          <result property="createtime" column="createtime"/>
+          <result property="modifytime" column="modifytime"/>
+          <result property="hstate" column="hstate"/>
+        </association>
+        <association property="cotid" javaType="com.zy.tenant.pojo.Tenant">
+            <id column="tid" property="tid"/>
+            <result property="tname" column="tname"/>
+            <result property="tphone" column="tphone"/>
+            <result property="tsex" column="tsex"/>
+            <result property="tnative" column="tnative"/>
+            <result property="tIDC" column="tIDC"/>
+            <result property="tTime" column="tTime"/>
+        </association>
+   </resultMap>
+   <delete id="delById" parameterType="java.lang.Integer">
+         DELETE FROM contract WHERE coid=#{coid};
+   </delete>
+   <select id="getByTname" parameterType="java.lang.String" resultType="java.lang.Integer">
+         select tid from tenant where tname like '%${tname}%';
+   </select>
+   <select id="getByHid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+         select hid from house where hid=#{hid};
+   </select>
+   <insert id="addByHidTid" parameterType="com.zy.contract.pojo.Contract">
+      INSERT INTO contract VALUES(NULL,${contract.getCohid().getHid()},${contract.getCotid().getTid()},now(),now(),'${contract.getCoend()}','${contract.getCohrental()}','${contract.getComway()}','${contract.getCoyajin()}','${contract.getCoperiods()}','${contract.getCoconpeo()}','${contract.getCoconzt()}');
+   </insert>
+   <!-- <update id="upById" parameterType="java.lang.Integer" ></update> -->
+   <select id="toById" parameterType="java.lang.Integer" resultMap="ClassContract">
+       select * from contract con
+       inner join house h on h.hid=con.cohid
+       inner join tenant t on t.tid=con.cotid where con.coid=${coid};
+   </select>
+   <update id="upByHidTid" parameterType="com.zy.contract.pojo.Contract">
+       UPDATE contract SET cohid=#{cohid.hid},cotid=#{cotid.tid},codata=#{codata},cobegin=#{cobegin},coend=#{coend},cohrental=#{cohrental},comway=#{comway},coyajin=#{coyajin},coperiods=#{coperiods},coconpeo=#{coconpeo},coconzt=#{coconzt} WHERE coid=#{coid};
+   </update>
+   
+</mapper>
